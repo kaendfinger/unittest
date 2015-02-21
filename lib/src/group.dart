@@ -47,29 +47,23 @@ class Group {
   ///
   /// If no set-up functions are declared, this returns a [Future] that
   /// completes immediately.
-  Future runSetUp() {
+  Future runSetUp() async {
     if (parent != null) {
-      return parent.runSetUp().then((_) {
-        if (setUp != null) return setUp();
-      });
+      await parent.runSetUp();
     }
 
-    if (setUp != null) return new Future.sync(setUp);
-    return new Future.value();
+    if (setUp != null) await setUp();
   }
 
   /// Run the tear-up functions for this and any parent groups.
   ///
   /// If no set-up functions are declared, this returns a [Future] that
   /// completes immediately.
-  Future runTearDown() {
-    if (parent != null) {
-      return new Future.sync(() {
-        if (tearDown != null) return tearDown();
-      }).then((_) => parent.runTearDown());
-    }
+  Future runTearDown() async {
+    if (tearDown != null) await tearDown();
 
-    if (tearDown != null) return new Future.sync(tearDown);
-    return new Future.value();
+    if (parent != null) {
+      await parent.runTearDown();
+    }
   }
 }

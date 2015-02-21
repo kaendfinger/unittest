@@ -35,17 +35,20 @@ class Loader {
   /// Loads all test suites in [dir].
   ///
   /// This will load tests from files that end in "_test.dart".
-  Future<Set<Suite>> loadDir(String dir) {
-    return Future
-        .wait(new Directory(dir).listSync(recursive: true).map((entry) {
-      if (entry is! File) return new Future.value();
-      if (!entry.path.endsWith("_test.dart")) return new Future.value();
-      if (p.split(entry.path).contains('packages')) return new Future.value();
+  Future<Set<Suite>> loadDir(String dir) async {
+    var suites = await Future.wait(new Directory(dir)
+        .listSync(recursive: true)
+        .map((entry) async {
+      if (entry is! File) return null;
+      if (!entry.path.endsWith("_test.dart")) return null;
+      if (p.split(entry.path).contains('packages')) return null;
 
       // TODO(nweiz): Provide a way for the caller to gracefully handle some
       // isolates failing to load without stopping the rest.
       return loadFile(entry.path);
-    })).then((suites) => suites.toSet()..remove(null));
+    }));
+
+    return suites.toSet()..remove(null);
   }
 
   /// Loads a test suite from the file at [path].
@@ -94,11 +97,10 @@ void main(_, Map message) {
   }
 
   /// Closes the loader and releases all resources allocated by it.
-  Future close() {
+  Future close() async {
     for (var isolate in _isolates) {
       isolate.kill();
     }
     _isolates.clear();
-    return new Future.value();
   }
 }

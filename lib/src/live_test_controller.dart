@@ -143,13 +143,12 @@ class LiveTestController {
   }
 
   /// A wrapper for [_onClose] that ensures that all controllers are closed.
-  Future _close() {
-    if (_isClosed) return new Future.value();
+  Future _close() async {
+    if (_isClosed) return;
     _onStateChangeController.close();
     _onErrorController.close();
     if (!completer.isCompleted) completer.complete();
 
-    if (_onClose != null) return new Future.sync(_onClose);
-    return new Future.value();
+    if (_onClose != null) await _onClose();
   }
 }
