@@ -39,9 +39,8 @@ class Engine {
   final _onTestStartedController = new StreamController<LiveTest>.broadcast();
 
   /// Creates an [Engine] that will run all tests in [suites].
-  Engine(Iterable<Suite> suites)
-      : liveTests = new UnmodifiableListView(flatten(suites.map((suite) =>
-            suite.tests.map((test) => test.load(suite)))));
+  Engine(Iterable<Suite> suites) : liveTests = new UnmodifiableListView(flatten(
+          suites.map((suite) => suite.tests.map((test) => test.load(suite)))));
 
   /// Runs all tests in all suites defined by this engine.
   ///
@@ -67,6 +66,5 @@ class Engine {
 
   /// Signals that the caller is done paying attention to test results and the
   /// engine should release any resources it has allocated.
-  Future close() =>
-      Future.wait(liveTests.map((liveTest) => liveTest.close()));
+  Future close() => Future.wait(liveTests.map((liveTest) => liveTest.close()));
 }

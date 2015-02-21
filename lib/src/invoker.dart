@@ -111,8 +111,8 @@ class Invoker {
   void handleError(error, [StackTrace stackTrace]) {
     if (stackTrace == null) stackTrace = new Chain.current();
 
-    var afterSuccess = liveTest.isComplete &&
-        liveTest.state.result == Result.success;
+    var afterSuccess =
+        liveTest.isComplete && liveTest.state.result == Result.success;
 
     if (error is! TestFailure) {
       _controller.setState(const State(Status.complete, Result.error));
@@ -129,9 +129,8 @@ class Invoker {
     if (!afterSuccess) return;
     handleError(
         "This test failed after it had already completed. Make sure to use "
-            "[expectAsync]\n"
-        "or the [completes] matcher when testing async code.",
-        stackTrace);
+        "[expectAsync]\n"
+        "or the [completes] matcher when testing async code.", stackTrace);
   }
 
   /// The method that's run when the test is started.
@@ -145,10 +144,8 @@ class Invoker {
         // the library.
         var timer = new Timer(new Duration(seconds: 30), () {
           if (liveTest.isComplete) return;
-          handleError(
-              new TimeoutException(
-                  "Test timed out after 30 seconds.",
-                  new Duration(seconds: 30)));
+          handleError(new TimeoutException(
+              "Test timed out after 30 seconds.", new Duration(seconds: 30)));
         });
 
         addOutstandingCallback();
@@ -158,8 +155,7 @@ class Invoker {
         // If an error is emitted before the first state change is handled, we
         // can end up with [onError] callbacks firing before the corresponding
         // [onStateChange], which violates the timing guarantees.
-        new Future(_test._body)
-            .then((_) => removeOutstandingCallback());
+        new Future(_test._body).then((_) => removeOutstandingCallback());
 
         // Explicitly handle an error here so that we can return the [Future].
         // If a [Future] returned from an error zone would throw an error
@@ -170,8 +166,8 @@ class Invoker {
           return new Future.sync(_test._tearDown);
         }).catchError(Zone.current.handleUncaughtError).then((_) {
           timer.cancel();
-          _controller.setState(
-              new State(Status.complete, liveTest.state.result));
+          _controller
+              .setState(new State(Status.complete, liveTest.state.result));
 
           // Use [Timer.run] here to avoid starving the DOM or other
           // non-microtask events.

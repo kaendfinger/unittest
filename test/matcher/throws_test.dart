@@ -19,8 +19,7 @@ void main() {
         return runTest(() {
           expect(() {}, throws);
         }).then((liveTest) {
-          expectTestFailed(liveTest,
-              "Expected: throws\n"
+          expectTestFailed(liveTest, "Expected: throws\n"
               "  Actual: <Closure: () => dynamic>\n"
               "   Which: did not throw\n");
         });
@@ -30,8 +29,7 @@ void main() {
         return runTest(() {
           expect(10, throws);
         }).then((liveTest) {
-          expectTestFailed(liveTest,
-              "Expected: throws\n"
+          expectTestFailed(liveTest, "Expected: throws\n"
               "  Actual: <10>\n"
               "   Which: is not a Function or Future\n");
         });
@@ -44,16 +42,15 @@ void main() {
       });
 
       test("with a function that throws a matching error", () {
-        expect(() => throw new FormatException("bad"),
-            throwsA(isFormatException));
+        expect(
+            () => throw new FormatException("bad"), throwsA(isFormatException));
       });
 
       test("with a function that doesn't throw", () {
         return runTest(() {
           expect(() {}, throwsA('oh no'));
         }).then((liveTest) {
-          expectTestFailed(liveTest,
-              "Expected: throws 'oh no'\n"
+          expectTestFailed(liveTest, "Expected: throws 'oh no'\n"
               "  Actual: <Closure: () => dynamic>\n"
               "   Which: did not throw\n");
         });
@@ -63,8 +60,7 @@ void main() {
         return runTest(() {
           expect(10, throwsA('oh no'));
         }).then((liveTest) {
-          expectTestFailed(liveTest,
-              "Expected: throws 'oh no'\n"
+          expectTestFailed(liveTest, "Expected: throws 'oh no'\n"
               "  Actual: <10>\n"
               "   Which: is not a Function or Future\n");
         });
@@ -74,8 +70,7 @@ void main() {
         return runTest(() {
           expect(() => throw 'aw dang', throwsA('oh no'));
         }).then((liveTest) {
-          expectTestFailed(liveTest,
-              "Expected: throws 'oh no'\n"
+          expectTestFailed(liveTest, "Expected: throws 'oh no'\n"
               "  Actual: <Closure: () => dynamic>\n"
               "   Which: threw 'aw dang'\n");
         });
@@ -93,8 +88,8 @@ void main() {
         return runTest(() {
           expect(new Future.value(), throws);
         }).then((liveTest) {
-          expectTestFailed(liveTest,
-              "Expected future to fail, but succeeded with 'null'.");
+          expectTestFailed(
+              liveTest, "Expected future to fail, but succeeded with 'null'.");
         });
       });
 
@@ -121,8 +116,8 @@ void main() {
         return runTest(() {
           expect(new Future.value(), throwsA('oh no'));
         }).then((liveTest) {
-          expectTestFailed(liveTest,
-              "Expected future to fail, but succeeded with 'null'.");
+          expectTestFailed(
+              liveTest, "Expected future to fail, but succeeded with 'null'.");
         });
       });
 
@@ -130,8 +125,7 @@ void main() {
         return runTest(() {
           expect(new Future.error('aw dang'), throwsA('oh no'));
         }).then((liveTest) {
-          expectTestFailed(liveTest, startsWith(
-              "Expected: throws 'oh no'\n"
+          expectTestFailed(liveTest, startsWith("Expected: throws 'oh no'\n"
               "  Actual: <Closure: () => dynamic>\n"
               "   Which: threw 'aw dang'\n"));
         });

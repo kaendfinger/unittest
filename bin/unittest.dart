@@ -21,8 +21,8 @@ import 'package:unittest/src/utils.dart';
 final _parser = new ArgParser();
 
 void main(List<String> args) {
-  _parser.addFlag("help", abbr: "h", negatable: false,
-      help: "Shows this usage information.");
+  _parser.addFlag("help",
+      abbr: "h", negatable: false, help: "Shows this usage information.");
   _parser.addOption("package-root", hide: true);
 
   var options;
@@ -46,7 +46,7 @@ void main(List<String> args) {
       if (!new Directory("test").existsSync()) {
         throw new LoadException("test",
             "No test files were passed and the default directory doesn't "
-                "exist.");
+            "exist.");
       }
       paths = ["test"];
     }
@@ -66,22 +66,20 @@ void main(List<String> args) {
       // TODO(nweiz): color this message?
       stderr.writeln(getErrorMessage(error));
 
-      // Only print stack traces for load errors that come from the user's 
+      // Only print stack traces for load errors that come from the user's
       if (error.innerError is! IOException &&
           error.innerError is! IsolateSpawnException &&
           error.innerError is! String) {
         stderr.write(terseChain(stackTrace));
       }
 
-      exitCode = error.innerError is IOException
-          ? exit_codes.io
-          : exit_codes.data;
+      exitCode =
+          error.innerError is IOException ? exit_codes.io : exit_codes.data;
     } else {
       stderr.writeln(getErrorMessage(error));
       stderr.writeln(new Trace.from(stackTrace).terse);
-      stderr.writeln(
-          "This is an unexpected error. Please file an issue at "
-              "http://github.com/dart-lang/unittest\n"
+      stderr.writeln("This is an unexpected error. Please file an issue at "
+          "http://github.com/dart-lang/unittest\n"
           "with the stack trace and instructions for reproducing the error.");
       exitCode = exit_codes.software;
     }

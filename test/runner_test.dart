@@ -76,7 +76,7 @@ Usage: pub run unittest:unittest [files or directories...]
       var result = _runUnittest([]);
       expect(result.stderr, equals(
           'Failed to load "test": No test files were passed and the default '
-              'directory doesn\'t exist.\n'));
+          'directory doesn\'t exist.\n'));
       expect(result.exitCode, equals(exit_codes.data));
     });
 
@@ -110,7 +110,7 @@ Usage: pub run unittest:unittest [files or directories...]
       var result = _runUnittest(["test.dart"]);
       expect(result.stderr, startsWith(
           'Failed to load "${p.relative(testPath, from: _sandbox)}": No '
-              'top-level main() function defined.\n'));
+          'top-level main() function defined.\n'));
       expect(result.exitCode, equals(exit_codes.data));
     });
 
@@ -121,7 +121,7 @@ Usage: pub run unittest:unittest [files or directories...]
       var result = _runUnittest(["test.dart"]);
       expect(result.stderr, startsWith(
           'Failed to load "${p.relative(testPath, from: _sandbox)}": Top-level '
-              'main getter is not a function.\n'));
+          'main getter is not a function.\n'));
       expect(result.exitCode, equals(exit_codes.data));
     });
 
@@ -132,7 +132,7 @@ Usage: pub run unittest:unittest [files or directories...]
       var result = _runUnittest(["test.dart"]);
       expect(result.stderr, startsWith(
           'Failed to load "${p.relative(testPath, from: _sandbox)}": Top-level '
-              'main() function takes arguments.\n'));
+          'main() function takes arguments.\n'));
       expect(result.exitCode, equals(exit_codes.data));
     });
 
@@ -170,10 +170,8 @@ Usage: pub run unittest:unittest [files or directories...]
 
     test("directly", () {
       new File(p.join(_sandbox, "test.dart")).writeAsStringSync(_success);
-      var result = _runDart([
-        "--package-root=${p.join(packageDir, 'packages')}",
-        "test.dart"
-      ]);
+      var result = _runDart(
+          ["--package-root=${p.join(packageDir, 'packages')}", "test.dart"]);
       expect(result.stdout, contains("All tests passed!"));
     });
   });
@@ -208,10 +206,8 @@ Usage: pub run unittest:unittest [files or directories...]
 
     test("directly", () {
       new File(p.join(_sandbox, "test.dart")).writeAsStringSync(_failure);
-      var result = _runDart([
-        "--package-root=${p.join(packageDir, 'packages')}",
-        "test.dart"
-      ]);
+      var result = _runDart(
+          ["--package-root=${p.join(packageDir, 'packages')}", "test.dart"]);
       expect(result.stdout, contains("Some tests failed."));
     });
   });

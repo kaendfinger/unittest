@@ -28,12 +28,14 @@ Future<Isolate> runInIsolate(String code, message, {packageRoot}) {
   var dartPath = p.join(dir, 'runInIsolate.dart');
   new File(dartPath).writeAsStringSync(code);
   var port = new ReceivePort();
-  return Isolate.spawn(_isolateBuffer, {
+  return Isolate
+      .spawn(_isolateBuffer, {
     'replyTo': port.sendPort,
     'uri': p.toUri(dartPath).toString(),
     'packageRoot': packageRoot == null ? null : packageRoot.toString(),
     'message': message
-  }).then((isolate) {
+  })
+      .then((isolate) {
     return port.first.then((response) {
       if (response['type'] != 'error') return isolate;
       isolate.kill();
@@ -44,8 +46,8 @@ Future<Isolate> runInIsolate(String code, message, {packageRoot}) {
     new Directory(dir).deleteSync(recursive: true);
     throw error;
   }).then((isolate) {
-    return new IsolateWrapper(isolate,
-        () => new Directory(dir).deleteSync(recursive: true));
+    return new IsolateWrapper(
+        isolate, () => new Directory(dir).deleteSync(recursive: true));
   });
 }
 
@@ -59,7 +61,8 @@ void _isolateBuffer(message) {
   var replyTo = message['replyTo'];
   var packageRoot = message['packageRoot'];
   if (packageRoot != null) packageRoot = Uri.parse(packageRoot);
-  Isolate.spawnUri(Uri.parse(message['uri']), [], message['message'],
+  Isolate
+      .spawnUri(Uri.parse(message['uri']), [], message['message'],
           packageRoot: packageRoot)
       .then((_) => replyTo.send({'type': 'success'}))
       .catchError((error, stackTrace) {

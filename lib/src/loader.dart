@@ -30,15 +30,14 @@ class Loader {
   /// If [packageRoot] is passed, it's used as the package root for all loaded
   /// tests. Otherwise, the `packages/` directories next to the test entrypoints
   /// will be used.
-  Loader({String packageRoot})
-      : _packageRoot = packageRoot;
+  Loader({String packageRoot}) : _packageRoot = packageRoot;
 
   /// Loads all test suites in [dir].
   ///
   /// This will load tests from files that end in "_test.dart".
   Future<Set<Suite>> loadDir(String dir) {
-    return Future.wait(new Directory(dir).listSync(recursive: true)
-        .map((entry) {
+    return Future
+        .wait(new Directory(dir).listSync(recursive: true).map((entry) {
       if (entry is! File) return new Future.value();
       if (!entry.path.endsWith("_test.dart")) return new Future.value();
       if (p.split(entry.path).contains('packages')) return new Future.value();
@@ -72,9 +71,8 @@ void main(_, Map message) {
   var sendPort = message['reply'];
   VmListener.start(sendPort, () => test.main);
 }
-''', {
-      'reply': receivePort.sendPort
-    }, packageRoot: packageRoot).catchError((error, stackTrace) {
+''', {'reply': receivePort.sendPort}, packageRoot: packageRoot)
+        .catchError((error, stackTrace) {
       receivePort.close();
       return new Future.error(new LoadException(path, error), stackTrace);
     }).then((isolate) {
@@ -86,8 +84,7 @@ void main(_, Map message) {
       } else if (response["type"] == "error") {
         var asyncError = RemoteException.deserialize(response["error"]);
         return new Future.error(
-            new LoadException(path, asyncError.error),
-            asyncError.stackTrace);
+            new LoadException(path, asyncError.error), asyncError.stackTrace);
       }
 
       return new Suite(path, response["tests"].map((test) {

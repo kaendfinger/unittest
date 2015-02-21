@@ -44,7 +44,8 @@ void main() {
       /// TODO(nweiz): Use scheduled_test for this once it's compatible with
       /// this version of unittest.
       new File(p.join(_sandbox, 'a_test.dart')).writeAsStringSync(_tests);
-      return _loader.loadFile(p.join(_sandbox, 'a_test.dart'))
+      return _loader
+          .loadFile(p.join(_sandbox, 'a_test.dart'))
           .then((suite_) => suite = suite_);
     });
 
@@ -79,8 +80,8 @@ void main() {
 
     test("throws a nice error if the package root doesn't exist", () {
       var loader = new Loader();
-      expect(() => loader.loadFile(p.join(_sandbox, 'a_test.dart')),
-          throwsA(isLoadException(
+      expect(() => loader.loadFile(p.join(_sandbox, 'a_test.dart')), throwsA(
+          isLoadException(
               "Directory ${p.join(_sandbox, 'packages')} does not exist.")));
     });
   });

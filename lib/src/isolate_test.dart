@@ -30,20 +30,15 @@ class IsolateTest implements Test {
       controller.setState(const State(Status.running, Result.success));
 
       receivePort = new ReceivePort();
-      _sendPort.send({
-        'command': 'run',
-        'reply': receivePort.sendPort
-      });
+      _sendPort.send({'command': 'run', 'reply': receivePort.sendPort});
 
       receivePort.listen((message) {
         if (message['type'] == 'error') {
           var asyncError = RemoteException.deserialize(message['error']);
           controller.addError(asyncError.error, asyncError.stackTrace);
         } else if (message['type'] == 'state-change') {
-          controller.setState(
-              new State(
-                  new Status.parse(message['status']),
-                  new Result.parse(message['result'])));
+          controller.setState(new State(new Status.parse(message['status']),
+              new Result.parse(message['result'])));
         } else {
           assert(message['type'] == 'complete');
           controller.completer.complete();

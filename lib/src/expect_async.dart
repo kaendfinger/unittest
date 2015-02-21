@@ -157,7 +157,7 @@ class _ExpectedFunction {
       a3 = _PLACEHOLDER, a4 = _PLACEHOLDER]) => _max6(a0, a1, a2, a3, a4);
 
   _max6([a0 = _PLACEHOLDER, a1 = _PLACEHOLDER, a2 = _PLACEHOLDER,
-      a3 = _PLACEHOLDER, a4 = _PLACEHOLDER, a5 = _PLACEHOLDER]) =>
+          a3 = _PLACEHOLDER, a4 = _PLACEHOLDER, a5 = _PLACEHOLDER]) =>
       _run([a0, a1, a2, a3, a4, a5].where((a) => a != _PLACEHOLDER));
 
   /// Runs the wrapped function with [args] and returns its return value.
@@ -170,10 +170,10 @@ class _ExpectedFunction {
       if (_invoker.liveTest.isComplete &&
           _invoker.liveTest.state.result == Result.success) {
         throw 'Callback ${_id}called ($_actualCalls) after test case '
-              '${_invoker.liveTest.test.name} had already completed.$_reason';
+            '${_invoker.liveTest.test.name} had already completed.$_reason';
       } else if (_maxExpectedCalls >= 0 && _actualCalls > _maxExpectedCalls) {
         throw new TestFailure('Callback ${_id}called more times than expected '
-                              '($_maxExpectedCalls).$_reason');
+            '($_maxExpectedCalls).$_reason');
       }
 
       return Function.apply(_callback, args.toList());
@@ -231,4 +231,4 @@ Function expectAsync(Function callback,
 /// [reason] should be the reason the callback is expected to be called.
 Function expectAsyncUntil(Function callback, bool isDone(),
     {String id, String reason}) => new _ExpectedFunction(callback, 0, -1,
-        id: id, reason: reason, isDone: isDone).func;
+    id: id, reason: reason, isDone: isDone).func;

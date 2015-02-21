@@ -25,8 +25,7 @@ void main() {
     _expectReport("""
         test('success 1', () {});
         test('success 2', () {});
-        test('success 3', () {});""",
-        """
+        test('success 3', () {});""", """
         +0: success 1
         +1: success 1
         +1: success 2
@@ -40,8 +39,7 @@ void main() {
     _expectReport("""
         test('failure 1', () => throw new TestFailure('oh no'));
         test('failure 2', () => throw new TestFailure('oh no'));
-        test('failure 3', () => throw new TestFailure('oh no'));""",
-        """
+        test('failure 3', () => throw new TestFailure('oh no'));""", """
         +0: failure 1
         +0 -1: failure 1
           oh no
@@ -71,8 +69,7 @@ void main() {
         test('failure 1', () => throw new TestFailure('oh no'));
         test('success 1', () {});
         test('failure 2', () => throw new TestFailure('oh no'));
-        test('success 2', () {});""",
-        """
+        test('success 2', () {});""", """
         +0: failure 1
         +0 -1: failure 1
           oh no
@@ -105,8 +102,7 @@ void main() {
           new Future.microtask(() => throw 'third error');
           new Future.microtask(completer.complete);
         });
-        test('wait', () => completer.future);""",
-        """
+        test('wait', () => completer.future);""", """
         +0: failures
         +0 -1: failures
           first error

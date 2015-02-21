@@ -39,8 +39,7 @@ void main() {
       return runTest(() {
         expect(10, completes);
       }).then((liveTest) {
-        expectTestFailed(liveTest,
-            "Expected: completes successfully\n"
+        expectTestFailed(liveTest, "Expected: completes successfully\n"
             "  Actual: <10>\n");
       });
     });
@@ -80,8 +79,7 @@ void main() {
       return runTest(() {
         expect(10, completion(equals(10)));
       }).then((liveTest) {
-        expectTestFailed(liveTest,
-            "Expected: completes to a value that <10>\n"
+        expectTestFailed(liveTest, "Expected: completes to a value that <10>\n"
             "  Actual: <10>\n");
       });
     });
@@ -90,10 +88,10 @@ void main() {
       return runTest(() {
         expect(new Future.value('a'), completion(equals('b')));
       }).then((liveTest) {
-        expectTestFailed(liveTest, startsWith(
-            "Expected: 'b'\n"
+        expectTestFailed(liveTest, startsWith("Expected: 'b'\n"
             "  Actual: 'a'\n"
-            "   Which: is different."));;
+            "   Which: is different."));
+        ;
       });
     });
   });

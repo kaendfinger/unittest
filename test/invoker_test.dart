@@ -214,16 +214,20 @@ void main() {
         const State(Status.complete, Result.error)
       ]);
 
-      expectErrors(liveTest, [(error) {
-        expect(lastState, equals(const State(Status.complete, Result.failure)));
-        expect(error, isTestFailure("oh no"));
-      }, (error) {
-        expect(lastState, equals(const State(Status.complete, Result.error)));
-        expect(error, equals(
-             "This test failed after it had already completed. Make sure to "
-                 "use [expectAsync]\n"
-             "or the [completes] matcher when testing async code."));
-      }]);
+      expectErrors(liveTest, [
+        (error) {
+          expect(
+              lastState, equals(const State(Status.complete, Result.failure)));
+          expect(error, isTestFailure("oh no"));
+        },
+        (error) {
+          expect(lastState, equals(const State(Status.complete, Result.error)));
+          expect(error, equals(
+              "This test failed after it had already completed. Make sure to "
+              "use [expectAsync]\n"
+              "or the [completes] matcher when testing async code."));
+        }
+      ]);
 
       return liveTest.run();
     });
@@ -242,16 +246,21 @@ void main() {
         const State(Status.complete, Result.failure)
       ]);
 
-      expectErrors(liveTest, [(error) {
-        expect(lastState.status, equals(Status.complete));
-        expect(error, isTestFailure("one"));
-      }, (error) {
-        expect(error, isTestFailure("two"));
-      }, (error) {
-        expect(error, isTestFailure("three"));
-      }, (error) {
-        expect(error, isTestFailure("four"));
-      }]);
+      expectErrors(liveTest, [
+        (error) {
+          expect(lastState.status, equals(Status.complete));
+          expect(error, isTestFailure("one"));
+        },
+        (error) {
+          expect(error, isTestFailure("two"));
+        },
+        (error) {
+          expect(error, isTestFailure("three"));
+        },
+        (error) {
+          expect(error, isTestFailure("four"));
+        }
+      ]);
 
       return liveTest.run();
     });
@@ -267,12 +276,15 @@ void main() {
         const State(Status.complete, Result.error)
       ]);
 
-      expectErrors(liveTest, [(error) {
-        expect(lastState, equals(const State(Status.complete, Result.error)));
-        expect(error, equals("error"));
-      }, (error) {
-        expect(error, isTestFailure("fail"));
-      }]);
+      expectErrors(liveTest, [
+        (error) {
+          expect(lastState, equals(const State(Status.complete, Result.error)));
+          expect(error, equals("error"));
+        },
+        (error) {
+          expect(error, isTestFailure("fail"));
+        }
+      ]);
 
       return liveTest.run();
     });
@@ -348,15 +360,18 @@ void main() {
         const State(Status.complete, Result.error)
       ]);
 
-      expectErrors(liveTest, [(error) {
-        expect(lastState, equals(const State(Status.complete, Result.error)));
-        expect(error, equals("oh no"));
-      }, (error) {
-        expect(error, equals(
-             "This test failed after it had already completed. Make sure to "
-                 "use [expectAsync]\n"
-             "or the [completes] matcher when testing async code."));
-      }]);
+      expectErrors(liveTest, [
+        (error) {
+          expect(lastState, equals(const State(Status.complete, Result.error)));
+          expect(error, equals("oh no"));
+        },
+        (error) {
+          expect(error, equals(
+              "This test failed after it had already completed. Make sure to "
+              "use [expectAsync]\n"
+              "or the [completes] matcher when testing async code."));
+        }
+      ]);
 
       return liveTest.run();
     });
@@ -375,16 +390,21 @@ void main() {
         const State(Status.complete, Result.error)
       ]);
 
-      expectErrors(liveTest, [(error) {
-        expect(lastState.status, equals(Status.complete));
-        expect(error, equals("one"));
-      }, (error) {
-        expect(error, equals("two"));
-      }, (error) {
-        expect(error, equals("three"));
-      }, (error) {
-        expect(error, equals("four"));
-      }]);
+      expectErrors(liveTest, [
+        (error) {
+          expect(lastState.status, equals(Status.complete));
+          expect(error, equals("one"));
+        },
+        (error) {
+          expect(error, equals("two"));
+        },
+        (error) {
+          expect(error, equals("three"));
+        },
+        (error) {
+          expect(error, equals("four"));
+        }
+      ]);
 
       return liveTest.run();
     });
@@ -401,13 +421,17 @@ void main() {
         const State(Status.complete, Result.error)
       ]);
 
-      expectErrors(liveTest, [(error) {
-        expect(lastState, equals(const State(Status.complete, Result.failure)));
-        expect(error, isTestFailure("fail"));
-      }, (error) {
-        expect(lastState, equals(const State(Status.complete, Result.error)));
-        expect(error, equals("error"));
-      }]);
+      expectErrors(liveTest, [
+        (error) {
+          expect(
+              lastState, equals(const State(Status.complete, Result.failure)));
+          expect(error, isTestFailure("fail"));
+        },
+        (error) {
+          expect(lastState, equals(const State(Status.complete, Result.error)));
+          expect(error, equals("error"));
+        }
+      ]);
 
       return liveTest.run();
     });
@@ -430,8 +454,7 @@ void main() {
     });
   });
 
-  test("a test doesn't complete until there are no outstanding callbacks",
-      () {
+  test("a test doesn't complete until there are no outstanding callbacks", () {
     var outstandingCallbackRemoved = false;
     var liveTest = new LocalTest("test", () {
       Invoker.current.addOutstandingCallback();
@@ -483,10 +506,12 @@ void main() {
         const State(Status.complete, Result.error)
       ]);
 
-      expectErrors(liveTest, [(error) {
-        expect(lastState.status, equals(Status.complete));
-        expect(error, new isInstanceOf<TimeoutException>());
-      }]);
+      expectErrors(liveTest, [
+        (error) {
+          expect(lastState.status, equals(Status.complete));
+          expect(error, new isInstanceOf<TimeoutException>());
+        }
+      ]);
 
       liveTest.run();
       async.elapse(new Duration(seconds: 30));

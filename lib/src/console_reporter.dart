@@ -62,7 +62,6 @@ class ConsoleReporter {
   ConsoleReporter(Iterable<Suite> suites)
       : _multipleSuites = suites.length > 1,
         _engine = new Engine(suites) {
-
     _engine.onTestStarted.listen((liveTest) {
       _progressLine(_description(liveTest));
       liveTest.onStateChange.listen((state) {
@@ -161,7 +160,10 @@ class ConsoleReporter {
     // Ensure the line fits within [_lineLength]. [buffer] includes the color
     // escape sequences too. Because these sequences are not visible characters,
     // we make sure they are not counted towards the limit.
-    var nonVisible = 1 + _green.length + _noColor.length + color.length +
+    var nonVisible = 1 +
+        _green.length +
+        _noColor.length +
+        color.length +
         (_failed.isEmpty ? 0 : _red.length + _noColor.length);
     var length = buffer.length - nonVisible;
     buffer.write(_truncate(message, _lineLength - length));
@@ -202,7 +204,7 @@ class ConsoleReporter {
         var buffer = new StringBuffer();
         buffer.write(words.first);
         buffer.write(' ...');
-        for ( ; i < words.length; i++) {
+        for (; i < words.length; i++) {
           buffer.write(' ');
           buffer.write(words[i]);
         }

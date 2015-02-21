@@ -30,7 +30,7 @@ class IsolateWrapper implements Isolate {
   void addOnExitListener(SendPort port) => _inner.addOnExitListener(port);
   Capability pause([Capability resumeCapability]) =>
       _inner.pause(resumeCapability);
-  void ping(SendPort responsePort, [int pingType=Isolate.IMMEDIATE]) =>
+  void ping(SendPort responsePort, [int pingType = Isolate.IMMEDIATE]) =>
       _inner.ping(responsePort, pingType);
   void removeErrorListener(SendPort port) => _inner.removeErrorListener(port);
   void removeOnExitListener(SendPort port) => _inner.removeOnExitListener(port);
@@ -39,7 +39,7 @@ class IsolateWrapper implements Isolate {
       _inner.setErrorsFatal(errorsAreFatal);
   String toString() => _inner.toString();
 
-  void kill([int priority=Isolate.BEFORE_NEXT_EVENT]) {
+  void kill([int priority = Isolate.BEFORE_NEXT_EVENT]) {
     _inner.kill(priority);
     _onExit();
   }

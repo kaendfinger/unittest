@@ -151,8 +151,7 @@ void main() {
   group("by default", () {
     test("won't allow the test to complete until it's called", () {
       return expectTestBlocks(
-          () => expectAsync(() {}),
-          (callback) => callback());
+          () => expectAsync(() {}), (callback) => callback());
     });
 
     test("may only be called once", () {
@@ -161,8 +160,8 @@ void main() {
         callback();
         callback();
       }).then((liveTest) {
-        expectTestFailed(liveTest,
-            "Callback called more times than expected (1).");
+        expectTestFailed(
+            liveTest, "Callback called more times than expected (1).");
       });
     });
   });
@@ -260,8 +259,7 @@ void main() {
   });
 
   test("will throw an error if max is less than count", () {
-    expect(() => expectAsync(() {}, max: 1, count: 2),
-        throwsArgumentError);
+    expect(() => expectAsync(() {}, max: 1, count: 2), throwsArgumentError);
   });
 
   group("expectAsyncUntil()", () {

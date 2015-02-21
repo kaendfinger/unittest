@@ -45,10 +45,12 @@ void expectSingleFailure(LiveTest liveTest) {
     const State(Status.complete, Result.failure)
   ]);
 
-  expectErrors(liveTest, [(error) {
-    expect(lastState.status, equals(Status.complete));
-    expect(error, isTestFailure("oh no"));
-  }]);
+  expectErrors(liveTest, [
+    (error) {
+      expect(lastState.status, equals(Status.complete));
+      expect(error, isTestFailure("oh no"));
+    }
+  ]);
 }
 
 /// Asserts that [liveTest] will have a single error, the string `"oh no"`.
@@ -58,10 +60,12 @@ void expectSingleError(LiveTest liveTest) {
     const State(Status.complete, Result.error)
   ]);
 
-  expectErrors(liveTest, [(error) {
-    expect(lastState.status, equals(Status.complete));
-    expect(error, equals("oh no"));
-  }]);
+  expectErrors(liveTest, [
+    (error) {
+      expect(lastState.status, equals(Status.complete));
+      expect(error, equals("oh no"));
+    }
+  ]);
 }
 
 /// Returns a matcher that matches a [TestFailure] with the given [message].
@@ -80,10 +84,11 @@ class _IsTestFailure extends Matcher {
   Description describe(Description description) =>
       description.add('a TestFailure with message ').addDescriptionOf(_message);
 
-  Description describeMismatch(item, Description mismatchDescription,
-                               Map matchState, bool verbose) {
+  Description describeMismatch(
+      item, Description mismatchDescription, Map matchState, bool verbose) {
     if (item is! TestFailure) {
-      return mismatchDescription.addDescriptionOf(item)
+      return mismatchDescription
+          .addDescriptionOf(item)
           .add('is not a TestFailure');
     } else {
       return mismatchDescription
@@ -109,14 +114,15 @@ class _IsRemoteException extends Matcher {
   bool matches(item, Map matchState) =>
       item is RemoteException && _message.matches(item.message, matchState);
 
-  Description describe(Description description) =>
-      description.add('a RemoteException with message ')
-          .addDescriptionOf(_message);
+  Description describe(Description description) => description
+      .add('a RemoteException with message ')
+      .addDescriptionOf(_message);
 
-  Description describeMismatch(item, Description mismatchDescription,
-                               Map matchState, bool verbose) {
+  Description describeMismatch(
+      item, Description mismatchDescription, Map matchState, bool verbose) {
     if (item is! RemoteException) {
-      return mismatchDescription.addDescriptionOf(item)
+      return mismatchDescription
+          .addDescriptionOf(item)
           .add('is not a RemoteException');
     } else {
       return mismatchDescription
@@ -143,14 +149,15 @@ class _IsLoadException extends Matcher {
   bool matches(item, Map matchState) =>
       item is LoadException && _innerError.matches(item.innerError, matchState);
 
-  Description describe(Description description) =>
-      description.add('a LoadException with message ')
-          .addDescriptionOf(_innerError);
+  Description describe(Description description) => description
+      .add('a LoadException with message ')
+      .addDescriptionOf(_innerError);
 
-  Description describeMismatch(item, Description mismatchDescription,
-                               Map matchState, bool verbose) {
+  Description describeMismatch(
+      item, Description mismatchDescription, Map matchState, bool verbose) {
     if (item is! LoadException) {
-      return mismatchDescription.addDescriptionOf(item)
+      return mismatchDescription
+          .addDescriptionOf(item)
           .add('is not a LoadException');
     } else {
       return mismatchDescription
@@ -167,7 +174,7 @@ class _IsLoadException extends Matcher {
 ///
 /// By default, this should pump the event queue enough times to allow any code
 /// to run, as long as it's not waiting on some external event.
-Future pumpEventQueue([int times=20]) {
+Future pumpEventQueue([int times = 20]) {
   if (times == 0) return new Future.value();
   // Use [new Future] future to allow microtask events to finish. The [new
   // Future.value] constructor uses scheduleMicrotask itself and would therefore

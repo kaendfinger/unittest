@@ -23,15 +23,13 @@ class LoadException implements Exception {
     var innerString = getErrorMessage(innerError);
     if (innerError is IsolateSpawnException) {
       // If this is a parse error, get rid of the noisy preamble.
-      innerString = innerString
-          .replaceFirst("'${p.toUri(p.absolute(path))}': error: ", "");
+      innerString = innerString.replaceFirst(
+          "'${p.toUri(p.absolute(path))}': error: ", "");
 
       // If this is a file system error, get rid of both the preamble and the
       // useless stack trace.
-      innerString = innerString.replaceFirst(
-          "Unhandled exception:\n"
-          "Uncaught Error: Load Error: FileSystemException: ",
-          "");
+      innerString = innerString.replaceFirst("Unhandled exception:\n"
+          "Uncaught Error: Load Error: FileSystemException: ", "");
       innerString = innerString.split("Stack Trace:\n").first.trim();
     }
 

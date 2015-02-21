@@ -88,11 +88,8 @@ void main() {
       return receivePort.first;
     }).then((response) {
       expect(response, containsPair("type", "loadException"));
-      expect(
-          response,
-          containsPair(
-              "message",
-              "Top-level main() function takes arguments."));
+      expect(response, containsPair(
+          "message", "Top-level main() function takes arguments."));
     });
   });
 
@@ -154,17 +151,21 @@ void main() {
           const State(Status.complete, Result.error)
         ]);
 
-        expectErrors(liveTest, [(error) {
-          expect(lastState,
-              equals(const State(Status.complete, Result.failure)));
-          expect(error, isTestFailure("oh no"));
-        }, (error) {
-          expect(lastState, equals(const State(Status.complete, Result.error)));
-          expect(error, isRemoteException(
-               "This test failed after it had already completed. Make sure to "
-                   "use [expectAsync]\n"
-               "or the [completes] matcher when testing async code."));
-        }]);
+        expectErrors(liveTest, [
+          (error) {
+            expect(lastState,
+                equals(const State(Status.complete, Result.failure)));
+            expect(error, isTestFailure("oh no"));
+          },
+          (error) {
+            expect(
+                lastState, equals(const State(Status.complete, Result.error)));
+            expect(error, isRemoteException(
+                "This test failed after it had already completed. Make sure to "
+                "use [expectAsync]\n"
+                "or the [completes] matcher when testing async code."));
+          }
+        ]);
 
         return liveTest.run();
       });
@@ -177,16 +178,21 @@ void main() {
           const State(Status.complete, Result.failure)
         ]);
 
-        expectErrors(liveTest, [(error) {
-          expect(lastState.status, equals(Status.complete));
-          expect(error, isTestFailure("one"));
-        }, (error) {
-          expect(error, isTestFailure("two"));
-        }, (error) {
-          expect(error, isTestFailure("three"));
-        }, (error) {
-          expect(error, isTestFailure("four"));
-        }]);
+        expectErrors(liveTest, [
+          (error) {
+            expect(lastState.status, equals(Status.complete));
+            expect(error, isTestFailure("one"));
+          },
+          (error) {
+            expect(error, isTestFailure("two"));
+          },
+          (error) {
+            expect(error, isTestFailure("three"));
+          },
+          (error) {
+            expect(error, isTestFailure("four"));
+          }
+        ]);
 
         return liveTest.run();
       });
@@ -201,10 +207,12 @@ void main() {
           const State(Status.complete, Result.error)
         ]);
 
-        expectErrors(liveTest, [(error) {
-          expect(lastState.status, equals(Status.complete));
-          expect(error, isRemoteException("oh no"));
-        }]);
+        expectErrors(liveTest, [
+          (error) {
+            expect(lastState.status, equals(Status.complete));
+            expect(error, isRemoteException("oh no"));
+          }
+        ]);
 
         return liveTest.run();
       });
@@ -219,16 +227,19 @@ void main() {
           const State(Status.complete, Result.error)
         ]);
 
-        expectErrors(liveTest, [(error) {
-          expect(lastState,
-              equals(const State(Status.complete, Result.error)));
-          expect(error, isRemoteException("oh no"));
-        }, (error) {
-          expect(error, isRemoteException(
-               "This test failed after it had already completed. Make sure to "
-                   "use [expectAsync]\n"
-               "or the [completes] matcher when testing async code."));
-        }]);
+        expectErrors(liveTest, [
+          (error) {
+            expect(
+                lastState, equals(const State(Status.complete, Result.error)));
+            expect(error, isRemoteException("oh no"));
+          },
+          (error) {
+            expect(error, isRemoteException(
+                "This test failed after it had already completed. Make sure to "
+                "use [expectAsync]\n"
+                "or the [completes] matcher when testing async code."));
+          }
+        ]);
 
         return liveTest.run();
       });
@@ -241,16 +252,21 @@ void main() {
           const State(Status.complete, Result.error)
         ]);
 
-        expectErrors(liveTest, [(error) {
-          expect(lastState.status, equals(Status.complete));
-          expect(error, isRemoteException("one"));
-        }, (error) {
-          expect(error, isRemoteException("two"));
-        }, (error) {
-          expect(error, isRemoteException("three"));
-        }, (error) {
-          expect(error, isRemoteException("four"));
-        }]);
+        expectErrors(liveTest, [
+          (error) {
+            expect(lastState.status, equals(Status.complete));
+            expect(error, isRemoteException("one"));
+          },
+          (error) {
+            expect(error, isRemoteException("two"));
+          },
+          (error) {
+            expect(error, isRemoteException("three"));
+          },
+          (error) {
+            expect(error, isRemoteException("four"));
+          }
+        ]);
 
         return liveTest.run();
       });
@@ -293,17 +309,15 @@ void _loadError(SendPort sendPort) =>
 
 /// An isolate entrypoint that throws a NoSuchMethodError.
 void _noSuchMethodError(SendPort sendPort) {
-  return VmListener.start(sendPort, () =>
-      throw new NoSuchMethodError(null, #main, [], {}));
+  return VmListener.start(
+      sendPort, () => throw new NoSuchMethodError(null, #main, [], {}));
 }
 
 /// An isolate entrypoint that returns a non-function.
-void _nonFunction(SendPort sendPort) =>
-    VmListener.start(sendPort, () => null);
+void _nonFunction(SendPort sendPort) => VmListener.start(sendPort, () => null);
 
 /// An isolate entrypoint that returns a function with the wrong arity.
-void _wrongArity(SendPort sendPort) =>
-    VmListener.start(sendPort, () => (_) {});
+void _wrongArity(SendPort sendPort) => VmListener.start(sendPort, () => (_) {});
 
 /// An isolate entrypoint that defines three tests that succeed.
 void _successfulTests(SendPort sendPort) {

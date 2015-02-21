@@ -15,8 +15,8 @@ String _computePackageDir() =>
     p.dirname(p.dirname(_libraryPath(#unittest.test.io)));
 
 /// Runs the unittest executable with the package root set properly.
-ProcessResult runUnittest(List<String> args, {String workingDirectory,
-    Map<String, String> environment}) {
+ProcessResult runUnittest(List<String> args,
+    {String workingDirectory, Map<String, String> environment}) {
   var allArgs = [
     p.join(packageDir, 'bin/unittest.dart'),
     "--package-root=${p.join(packageDir, 'packages')}"
@@ -26,13 +26,13 @@ ProcessResult runUnittest(List<String> args, {String workingDirectory,
   environment.putIfAbsent("_UNITTEST_USE_COLOR", () => "false");
 
   // TODO(nweiz): Use ScheduledProcess once it's compatible.
-  return runDart(allArgs, workingDirectory: workingDirectory,
-      environment: environment);
+  return runDart(allArgs,
+      workingDirectory: workingDirectory, environment: environment);
 }
 
 /// Runs Dart.
-ProcessResult runDart(List<String> args, {String workingDirectory,
-    Map<String, String> environment}) {
+ProcessResult runDart(List<String> args,
+    {String workingDirectory, Map<String, String> environment}) {
   var allArgs = Platform.executableArguments.toList()..addAll(args);
 
   // TODO(nweiz): Use ScheduledProcess once it's compatible.
@@ -48,5 +48,3 @@ String _libraryPath(Symbol libraryName) {
   var lib = currentMirrorSystem().findLibrary(libraryName);
   return p.fromUri(lib.uri);
 }
-
-

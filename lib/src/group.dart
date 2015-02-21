@@ -39,8 +39,7 @@ class Group {
   /// Creates a new root group.
   ///
   /// This is the implicit group that exists outside of any calls to `group()`.
-  Group.root()
-      : this(null, null);
+  Group.root() : this(null, null);
 
   Group(this.parent, this._description);
 

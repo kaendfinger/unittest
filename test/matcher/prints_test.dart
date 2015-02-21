@@ -29,8 +29,7 @@ void main() {
       return runTest(() {
         expect(() => print("Hello, world!"), prints("Goodbye, world!\n"));
       }).then((liveTest) {
-        expectTestFailed(liveTest,
-            "Expected: prints 'Goodbye, world!\\n'\n"
+        expectTestFailed(liveTest, "Expected: prints 'Goodbye, world!\\n'\n"
             "  ''\n"
             "  Actual: <Closure: () => dynamic>\n"
             "   Which: printed 'Hello, world!\\n'\n"
@@ -47,8 +46,7 @@ void main() {
       return runTest(() {
         expect(() => print("Hello, world!"), prints(contains("Goodbye")));
       }).then((liveTest) {
-        expectTestFailed(liveTest,
-            "Expected: prints contains 'Goodbye'\n"
+        expectTestFailed(liveTest, "Expected: prints contains 'Goodbye'\n"
             "  Actual: <Closure: () => dynamic>\n"
             "   Which: printed 'Hello, world!\\n'\n"
             "  ''\n");
@@ -59,8 +57,7 @@ void main() {
       return runTest(() {
         expect(() {}, prints(contains("Goodbye")));
       }).then((liveTest) {
-        expectTestFailed(liveTest,
-            "Expected: prints contains 'Goodbye'\n"
+        expectTestFailed(liveTest, "Expected: prints contains 'Goodbye'\n"
             "  Actual: <Closure: () => dynamic>\n"
             "   Which: printed nothing.\n");
       });
@@ -70,8 +67,7 @@ void main() {
       return runTest(() {
         expect(10, prints(contains("Goodbye")));
       }).then((liveTest) {
-        expectTestFailed(liveTest,
-            "Expected: prints contains 'Goodbye'\n"
+        expectTestFailed(liveTest, "Expected: prints contains 'Goodbye'\n"
             "  Actual: <10>\n");
       });
     });

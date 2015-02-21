@@ -13,8 +13,7 @@ import 'dart:io';
 ///
 /// On Windows or when not printing to a terminal, only printable ASCII
 /// characters should be used.
-bool get canUseSpecialChars =>
-    Platform.operatingSystem != 'windows' &&
+bool get canUseSpecialChars => Platform.operatingSystem != 'windows' &&
     Platform.environment["_UNITTEST_USE_COLOR"] != "false";
 
 /// Gets a "special" string (ANSI escape or Unicode).

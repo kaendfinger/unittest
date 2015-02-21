@@ -56,8 +56,7 @@ class VmListener {
       return;
     }
 
-    new VmListener._(new Suite("VmListener", declarer.tests))
-        ._listen(sendPort);
+    new VmListener._(new Suite("VmListener", declarer.tests))._listen(sendPort);
   }
 
   /// Sends a message over [sendPort] indicating that the tests failed to load.
@@ -84,10 +83,7 @@ class VmListener {
       });
     }
 
-    sendPort.send({
-      "type": "success",
-      "tests": tests
-    });
+    sendPort.send({"type": "success", "tests": tests});
   }
 
   /// Runs [test] and send the results across [sendPort].
@@ -105,8 +101,8 @@ class VmListener {
     liveTest.onError.listen((asyncError) {
       sendPort.send({
         "type": "error",
-        "error": RemoteException.serialize(
-            asyncError.error, asyncError.stackTrace)
+        "error":
+            RemoteException.serialize(asyncError.error, asyncError.stackTrace)
       });
     });
 
