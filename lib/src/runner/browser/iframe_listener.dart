@@ -48,7 +48,7 @@ class IframeListener {
       return;
     }
 
-    new BrowserListener._(new Suite("BrowserListener", declarer.tests))
+    new IframeListener._(new Suite("IframeListener", declarer.tests))
         ._listen(channel);
   }
 
@@ -78,7 +78,7 @@ class IframeListener {
     channel.output.add({"type": "loadException", "message": message});
   }
 
-  BrowserListener._(this._suite);
+  IframeListener._(this._suite);
 
   void _listen(MultiChannel channel) {
     var tests = [];
