@@ -55,7 +55,7 @@ StreamChannel _connectToIframe(String url) {
   var inputController = new StreamController(sync: true);
   var outputController = new StreamController(sync: true);
   iframe.onLoad.first.then((_) {
-    // TODO(nweiz): use MessageChannel once Firefox supports them
+    // TODO(nweiz): use MessageChannel once Firefox supports it
     // (http://caniuse.com/#search=MessageChannel).
 
     // Send an initial command to give the iframe something to reply to.
