@@ -2,7 +2,7 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-library unittest.vm_listener;
+library unittest.runner.vm_listener;
 
 import 'dart:isolate';
 import 'dart:async';

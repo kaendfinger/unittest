@@ -2,7 +2,7 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-library unittest.load_exception;
+library unittest.runner.load_exception;
 
 import 'dart:isolate';
 
