@@ -63,7 +63,12 @@ class IframeListener {
 
       if (first) {
         outputController.stream.listen((data) {
-          message.source.postMessage(data, window.location.origin);
+          // TODO(nweiz): Stop manually adding href here once issue 22554 is
+          // fixed.
+          message.source.postMessage({
+            "href": window.location.href,
+            "data": data
+          }, window.location.origin);
         });
         first = false;
       } else {

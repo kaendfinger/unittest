@@ -64,9 +64,13 @@ StreamChannel _connectToIframe(String url) {
         window.location.origin);
 
     window.onMessage.listen((message) {
-      // TODO: ensure that this message is coming from the correct iframe
+      if (message.origin != window.location.origin) return;
+
+      // TODO(nweiz): Stop manually checking href here once issue 22554 is fixed.
+      if (message.data["href"] != iframe.src) return;
+
       message.stopPropagation();
-      inputController.add(message.data);
+      inputController.add(message.data["data"]);
     });
 
     outputController.stream.listen((message) =>
