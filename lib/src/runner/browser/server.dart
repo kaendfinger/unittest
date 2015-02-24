@@ -103,13 +103,13 @@ class BrowserServer {
     var components = p.url.split(request.url.path).skip(1);
 
     if (request.url.path == "/" || request.url.path == "/index.html") {
-      var path = p.join(libDir, 'src', 'runner', 'browser_host.html');
+      var path = p.join(libDir, 'src/runner/browser/host.html');
       return new shelf.Response.ok(
           new File(path).openRead(),
           headers: {'content-type': 'text/html'});
     } else if (request.url.path == "/index.js") {
       // TODO: check request method
-      var path = p.join(libDir, 'src', 'runner', 'browser_host.dart.js');
+      var path = p.join(libDir, 'src/runner/browser/host.dart.js');
       return new shelf.Response.ok(
           new File(path).openRead(),
           headers: {'content-type': 'application/javascript'});
