@@ -7,11 +7,11 @@ library unittest.vm_listener;
 import 'dart:isolate';
 import 'dart:async';
 
-import 'declarer.dart';
-import 'remote_exception.dart';
-import 'suite.dart';
-import 'test.dart';
-import 'utils.dart';
+import '../backend/declarer.dart';
+import '../backend/suite.dart';
+import '../backend/test.dart';
+import '../util/remote_exception.dart';
+import '../utils.dart';
 
 /// A class that runs tests in a separate isolate and communicates the results
 /// back to the main isolate.

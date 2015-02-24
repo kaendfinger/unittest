@@ -13,12 +13,12 @@ import 'package:shelf/shelf.dart' as shelf;
 import 'package:shelf/shelf_io.dart' as shelf_io;
 import 'package:shelf_web_socket/shelf_web_socket.dart';
 
+import '../backend/suite.dart';
+import '../util/dart.dart' as dart;
+import '../util/io.dart';
+import '../util/one_off_handler.dart';
 import 'browser_manager.dart';
 import 'browser_runner.dart';
-import 'dart.dart' as dart;
-import 'io.dart';
-import 'one_off_handler.dart';
-import 'suite.dart';
 
 class BrowserServer {
   static Future<BrowserServer> start({String packageRoot}) {
@@ -103,13 +103,15 @@ class BrowserServer {
     var components = p.url.split(request.url.path).skip(1);
 
     if (request.url.path == "/" || request.url.path == "/index.html") {
+      var path = p.join(libDir, 'src', 'runner', 'browser_host.html');
       return new shelf.Response.ok(
-          new File(p.join(libDir, 'src', 'browser_host.html')).openRead(),
+          new File(path).openRead(),
           headers: {'content-type': 'text/html'});
     } else if (request.url.path == "/index.js") {
       // TODO: check request method
+      var path = p.join(libDir, 'src', 'runner', 'browser_host.dart.js');
       return new shelf.Response.ok(
-          new File(p.join(libDir, 'src', 'browser_host.dart.js')).openRead(),
+          new File(path).openRead(),
           headers: {'content-type': 'application/javascript'});
     }
 
@@ -125,7 +127,7 @@ class BrowserServer {
     var dir = new Directory(_compiledDir).createTempSync('test_').path;
     var output = p.join(dir, p.basename(path) + ".js");
     return dart.compile('''
-import "package:unittest/src/browser_listener.dart";
+import "package:unittest/src/runner/browser_listener.dart";
 
 import "${p.toUri(p.absolute(path))}" as test;
 

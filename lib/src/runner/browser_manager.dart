@@ -9,12 +9,12 @@ import 'dart:convert';
 
 import 'package:http_parser/http_parser.dart';
 
+import '../backend/suite.dart';
+import '../util/multi_channel.dart';
+import '../util/remote_exception.dart';
+import '../utils.dart';
 import 'browser_test.dart';
 import 'load_exception.dart';
-import 'remote_exception.dart';
-import 'multi_channel.dart';
-import 'suite.dart';
-import 'utils.dart';
 
 class BrowserManager {
   final MultiChannel _channel;

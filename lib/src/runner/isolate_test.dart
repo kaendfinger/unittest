@@ -2,36 +2,40 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-library unittest.browser_test;
+library unittest.isolate_test;
 
-import 'live_test.dart';
-import 'live_test_controller.dart';
-import 'multi_channel.dart';
-import 'remote_exception.dart';
-import 'state.dart';
-import 'suite.dart';
-import 'test.dart';
+import 'dart:isolate';
 
-/// A test in a running browser.
-class BrowserTest implements Test {
+import '../backend/live_test.dart';
+import '../backend/live_test_controller.dart';
+import '../backend/state.dart';
+import '../backend/suite.dart';
+import '../backend/test.dart';
+import '../util/remote_exception.dart';
+
+/// A test in another isolate.
+class IsolateTest implements Test {
   final String name;
 
-  final MultiChannel _channel;
+  /// The port on which to communicate with the remote test.
+  final SendPort _sendPort;
 
-  BrowserTest(this.name, this._channel);
+  IsolateTest(this.name, this._sendPort);
 
+  /// Loads a single runnable instance of this test.
   LiveTest load(Suite suite) {
+    var receivePort;
     var controller;
     controller = new LiveTestController(suite, this, () {
       controller.setState(const State(Status.running, Result.success));
 
-      var subChannel = _channel.createSubChannel();
-      _channel.output.add({
+      receivePort = new ReceivePort();
+      _sendPort.send({
         'command': 'run',
-        'channel': subChannel.id
+        'reply': receivePort.sendPort
       });
 
-      subChannel.input.listen((message) {
+      receivePort.listen((message) {
         if (message['type'] == 'error') {
           var asyncError = RemoteException.deserialize(message['error']);
           controller.addError(asyncError.error, asyncError.stackTrace);
@@ -45,6 +49,8 @@ class BrowserTest implements Test {
           controller.completer.complete();
         }
       });
+    }, onClose: () {
+      if (receivePort != null) receivePort.close();
     });
     return controller.liveTest;
   }

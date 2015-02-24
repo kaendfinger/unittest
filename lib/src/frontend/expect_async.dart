@@ -4,9 +4,9 @@
 
 library unittest.expect_async;
 
+import '../backend/invoker.dart';
+import '../backend/state.dart';
 import 'expect.dart';
-import 'invoker.dart';
-import 'state.dart';
 
 /// An object used to detect unpassed arguments.
 const _PLACEHOLDER = const Object();

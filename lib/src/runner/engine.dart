@@ -7,10 +7,10 @@ library unittest.engine;
 import 'dart:async';
 import 'dart:collection';
 
-import 'live_test.dart';
-import 'state.dart';
-import 'suite.dart';
-import 'utils.dart';
+import '../backend/live_test.dart';
+import '../backend/state.dart';
+import '../backend/suite.dart';
+import '../utils.dart';
 
 /// An [Engine] manages a run that encompasses multiple test suites.
 ///

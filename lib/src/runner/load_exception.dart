@@ -8,7 +8,7 @@ import 'dart:isolate';
 
 import 'package:path/path.dart' as p;
 
-import 'utils.dart';
+import '../utils.dart';
 
 class LoadException implements Exception {
   final String path;

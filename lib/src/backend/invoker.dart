@@ -8,13 +8,13 @@ import 'dart:async';
 
 import 'package:stack_trace/stack_trace.dart';
 
-import 'expect.dart';
+import '../frontend/expect.dart';
+import '../utils.dart';
 import 'live_test.dart';
 import 'live_test_controller.dart';
 import 'state.dart';
 import 'suite.dart';
 import 'test.dart';
-import 'utils.dart';
 
 /// A test in this isolate.
 class LocalTest implements Test {

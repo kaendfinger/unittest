@@ -10,8 +10,8 @@ import 'dart:html';
 
 import 'package:stack_trace/stack_trace.dart';
 
-import 'multi_channel.dart';
-import 'stream_channel.dart';
+import '../util/multi_channel.dart';
+import '../util/stream_channel.dart';
 
 void main() {
   runZoned(() {

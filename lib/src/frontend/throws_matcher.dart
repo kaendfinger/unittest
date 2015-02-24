@@ -8,9 +8,9 @@ import 'dart:async';
 
 import 'package:matcher/matcher.dart' hide fail, expect;
 
+import '../backend/invoker.dart';
+import '../utils.dart';
 import 'expect.dart';
-import 'invoker.dart';
-import 'utils.dart';
 
 /// This can be used to match two kinds of objects:
 ///

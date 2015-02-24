@@ -9,7 +9,7 @@ import 'dart:isolate';
 
 import 'package:stack_trace/stack_trace.dart';
 
-import 'expect.dart';
+import '../frontend/expect.dart';
 
 /// An exception that was thrown remotely.
 ///

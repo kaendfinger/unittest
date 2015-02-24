@@ -6,7 +6,7 @@ library unittest.group;
 
 import 'dart:async';
 
-import 'utils.dart';
+import '../utils.dart';
 
 /// A group contains multiple tests and subgroups.
 ///

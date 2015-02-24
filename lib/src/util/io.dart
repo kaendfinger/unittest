@@ -12,7 +12,8 @@ import 'package:path/path.dart' as p;
 
 /// The root directory of the `unittest` package.
 final String libDir = _computeLibDir();
-String _computeLibDir() => p.dirname(p.dirname(_libraryPath(#unittest.io)));
+String _computeLibDir() =>
+    p.dirname(p.dirname(p.dirname(_libraryPath(#unittest.io))));
 
 /// Returns whether the current Dart version supports [Isolate.kill].
 final bool supportsIsolateKill = _supportsIsolateKill;

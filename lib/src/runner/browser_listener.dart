@@ -7,12 +7,12 @@ library unittest.browser_listener;
 import 'dart:async';
 import 'dart:html';
 
-import 'declarer.dart';
-import 'multi_channel.dart';
-import 'remote_exception.dart';
-import 'suite.dart';
-import 'test.dart';
-import 'utils.dart';
+import '../backend/declarer.dart';
+import '../backend/suite.dart';
+import '../backend/test.dart';
+import '../util/multi_channel.dart';
+import '../util/remote_exception.dart';
+import '../utils.dart';
 
 class BrowserListener {
   /// The test suite to run.
