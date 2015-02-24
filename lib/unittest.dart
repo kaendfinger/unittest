@@ -10,7 +10,7 @@ import 'package:path/path.dart' as p;
 
 import 'src/configuration.dart';
 import 'src/declarer.dart';
-import 'src/console_reporter.dart';
+//import 'src/console_reporter.dart';
 import 'src/invoker.dart';
 import 'src/suite.dart';
 import 'src/test_case.dart';
@@ -63,24 +63,24 @@ Declarer _globalDeclarer;
 /// When using the runner, this returns the [Zone]-scoped declarer that's set by
 /// [VmListener]. If the test file is run directly, this returns
 /// [_globalDeclarer] (and sets it up on the first call).
-Declarer get _declarer {
-  var declarer = Zone.current[#unittest.declarer];
-  if (declarer != null) return declarer;
-  if (_globalDeclarer != null) return _globalDeclarer;
+Declarer get _declarer => Zone.current[#unittest.declarer];
+  // var declarer = Zone.current[#unittest.declarer];
+  // if (declarer != null) return declarer;
+  // if (_globalDeclarer != null) return _globalDeclarer;
 
-  // Since there's no Zone-scoped declarer, the test file is being run directly.
-  // In order to run the tests, we set up our own Declarer via
-  // [_globalDeclarer], and schedule a microtask to run the tests once they're
-  // finished being defined.
-  _globalDeclarer = new Declarer();
-  scheduleMicrotask(() {
-    var suite = new Suite(p.prettyUri(Uri.base), _globalDeclarer.tests);
-    // TODO(nweiz): Use a reporter that doesn't import dart:io here.
-    // TODO(nweiz): Set the exit code on the VM when issue 6943 is fixed.
-    new ConsoleReporter([suite]).run();
-  });
-  return _globalDeclarer;
-}
+  // // Since there's no Zone-scoped declarer, the test file is being run directly.
+  // // In order to run the tests, we set up our own Declarer via
+  // // [_globalDeclarer], and schedule a microtask to run the tests once they're
+  // // finished being defined.
+  // _globalDeclarer = new Declarer();
+  // scheduleMicrotask(() {
+  //   var suite = new Suite(p.prettyUri(Uri.base), _globalDeclarer.tests);
+  //   // TODO(nweiz): Use a reporter that doesn't import dart:io here.
+  //   // TODO(nweiz): Set the exit code on the VM when issue 6943 is fixed.
+  //   new ConsoleReporter([suite]).run();
+  // });
+//   return _globalDeclarer;
+// }
 
 // TODO(nweiz): This and other top-level functions should throw exceptions if
 // they're called after the declarer has finished declaring.

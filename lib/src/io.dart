@@ -6,6 +6,13 @@ library unittest.io;
 
 import 'dart:async';
 import 'dart:io';
+import 'dart:mirrors';
+
+import 'package:path/path.dart' as p;
+
+/// The root directory of the `unittest` package.
+final String libDir = _computeLibDir();
+String _computeLibDir() => p.dirname(p.dirname(_libraryPath(#unittest.io)));
 
 // TODO(nweiz): Make this check [stdioType] once that works within "pub run".
 /// Whether "special" strings such as Unicode characters or color escapes are
@@ -40,4 +47,43 @@ Future withTempDir(Future fn(String path)) {
     return new Future.sync(() => fn(tempDir.path))
         .whenComplete(() => tempDir.deleteSync(recursive: true));
   });
+}
+
+/// Creates a URL string for [address]:[port].
+///
+/// Handles properly formatting IPv6 addresses.
+Uri baseUrlForAddress(InternetAddress address, int port) {
+  if (address.isLoopback) {
+    return new Uri(scheme: "http", host: "localhost", port: port);
+  }
+
+  // IPv6 addresses in URLs need to be enclosed in square brackets to avoid
+  // URL ambiguity with the ":" in the address.
+  if (address.type == InternetAddressType.IP_V6) {
+    return new Uri(scheme: "http", host: "[${address.address}]", port: port);
+  }
+
+  return new Uri(scheme: "http", host: address.address, port: port);
+}
+
+String packageRootFor(String path, [String override]) {
+  var packageRoot = override == null
+      ? p.join(p.dirname(path), 'packages')
+      : override;
+
+  if (!new Directory(packageRoot).existsSync()) {
+    throw new LoadException(path, "Directory $packageRoot does not exist.");
+  }
+
+  return packageRoot;
+}
+
+/// The library name must be globally unique, or the wrong library path may be
+/// returned.
+String _libraryPath(Symbol libraryName) {
+  var lib = currentMirrorSystem().findLibrary(libraryName);
+  if (lib.uri.scheme != 'package') return p.fromUri(lib.uri);
+
+  // TODO: don't assume this is being run next to a packages directory.
+  return p.join('packages', p.fromUri(lib.uri.path));
 }

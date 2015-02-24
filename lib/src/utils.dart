@@ -5,6 +5,7 @@
 library unittest.utils;
 
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:stack_trace/stack_trace.dart';
 
@@ -62,4 +63,11 @@ List flatten(Iterable nested) {
   }
   helper(nested);
   return result;
+}
+
+StreamSink transformSink(StreamSink original, Converter converter) {
+  var controller = new StreamController(sync: true);
+  controller.stream.listen(
+      (message) => original.add(converter.convert(message)));
+  return controller.sink;
 }

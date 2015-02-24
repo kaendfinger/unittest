@@ -10,7 +10,9 @@ import 'dart:isolate';
 
 import 'package:path/path.dart' as p;
 
+import 'browser_server.dart';
 import 'dart.dart';
+import 'io.dart';
 import 'isolate_test.dart';
 import 'load_exception.dart';
 import 'remote_exception.dart';
@@ -24,6 +26,17 @@ class Loader {
 
   /// All isolates that have been spun up by the loader.
   final _isolates = new Set<Isolate>();
+
+  Future<BrowserServer> get _browserServer {
+    if (_browserServerCompleter == null) {
+      _browserServerCompleter = new Completer();
+      BrowserServer.start(packageRoot: _packageRoot)
+          .then(_browserServerCompleter.complete)
+          .catchError(_browserServerCompleter.completeError);
+    }
+    return _browserServerCompleter.future;
+  }
+  Completer<BrowserServer> _browserServerCompleter;
 
   /// Creates a new loader.
   ///
@@ -53,15 +66,16 @@ class Loader {
   ///
   /// This will throw a [LoadException] if the file fails to load.
   Future<Suite> loadFile(String path) {
-    // TODO(nweiz): Support browser tests.
-    var packageRoot = _packageRoot == null
-        ? p.join(p.dirname(path), 'packages')
-        : _packageRoot;
+    // TODO: Choose which to load/whether to load both.
+    return _loadBrowserFile(path);
+    return _loadVmFile(path);
+  }
 
-    if (!new Directory(packageRoot).existsSync()) {
-      throw new LoadException(path, "Directory $packageRoot does not exist.");
-    }
+  Future<Suite> _loadBrowserFile(String path) =>
+      _browserServer.then((browserServer) => browserServer.loadSuite(path));
 
+  Future<Suite> _loadVmFile(String path) {
+    var packageRoot = packageRootFor(path, _packageRoot);
     var receivePort = new ReceivePort();
     return runInIsolate('''
 import "package:unittest/src/vm_listener.dart";
@@ -102,6 +116,8 @@ void main(_, Map message) {
       isolate.kill();
     }
     _isolates.clear();
-    return new Future.value();
+
+    if (_browserServerCompleter == null) return new Future.value();
+    return _browserServer.then((browserServer) => browserServer.close());
   }
 }
