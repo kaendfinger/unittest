@@ -52,9 +52,7 @@ Future<Isolate> runInIsolate(String code, message, {packageRoot}) {
 }
 
 Future compile(String code, String destination, {packageRoot}) {
-  print("compiling...");
   return withTempDir((dir) {
-    print("withTempDir $dir");
     var path = p.join(dir, "runInBrowser.dart");
     new File(path).writeAsStringSync(code);
 
@@ -67,16 +65,13 @@ Future compile(String code, String destination, {packageRoot}) {
     }
 
     // TODO(nweiz): detect whether we should tell dart2js to use colored output.
-    print("running $dart2jsPath $args");
     return Process.start(dart2jsPath, args).then((process) {
-      print("running dart2js");
       // TODO: properly handle these.
       process.stdout.transform(UTF8.decoder).listen(stdout.write);
       process.stderr.transform(UTF8.decoder).listen(stderr.write);
 
       // TODO: do this better.
       return process.exitCode.then((exitCode) {
-        print("done running dart2js");
         if (exitCode != 0) throw "dart2js failed";
       });
     });

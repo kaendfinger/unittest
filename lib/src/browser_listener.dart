@@ -19,9 +19,7 @@ class BrowserListener {
   final Suite _suite;
 
   static void start(Function getMain()) {
-    print("in browser listener");
     var channel = _postMessageChannel();
-    print("opened message channel");
 
     var main;
     try {
@@ -43,14 +41,12 @@ class BrowserListener {
     try {
       runZoned(main, zoneValues: {#unittest.declarer: declarer});
     } catch (error, stackTrace) {
-      print("sending error: $error\n$stackTrace");
       channel.output.add({
         "type": "error",
         "error": RemoteException.serialize(error, stackTrace)
       });
       return;
     }
-    print("done running declarer");
 
     new BrowserListener._(new Suite("BrowserListener", declarer.tests))
         ._listen(channel);
@@ -62,13 +58,11 @@ class BrowserListener {
 
     var first = true;
     window.onMessage.listen((message) {
-      print("[inner pm] incoming message: ${message.data}");
       if (message.origin != window.location.origin) return;
       message.stopPropagation();
 
       if (first) {
         outputController.stream.listen((data) {
-          print("[inner pm] outgoing message: $data");
           message.source.postMessage(data, window.location.origin);
         });
         first = false;
@@ -81,7 +75,6 @@ class BrowserListener {
   }
 
   static void _sendLoadException(MultiChannel channel, String message) {
-    print("sending load exception: $message");
     channel.output.add({"type": "loadException", "message": message});
   }
 
@@ -100,7 +93,6 @@ class BrowserListener {
       });
     }
 
-    print("sending ${{"type": "success", "tests": tests}}");
     channel.output.add({
       "type": "success",
       "tests": tests

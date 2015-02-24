@@ -36,7 +36,6 @@ class BrowserManager {
     // wrapped within the host's channel.
     suiteChannel = new MultiChannel(suiteChannel.input, suiteChannel.output);
     return suiteChannel.input.first.then((response) {
-      print("suite channel response: $response");
       if (response["type"] == "loadException") {
         return new Future.error(new LoadException(path, response["message"]));
       } else if (response["type"] == "error") {

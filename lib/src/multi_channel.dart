@@ -35,18 +35,12 @@ class _MultiChannel implements MultiChannel {
   _MultiChannel(this._innerInput, this._innerOutput) {
     _inputs[0] = _inputController.sink;
     _outputController.stream.listen((message) {
-      print("[mc] raw output: ${[0, message]}");
       _innerOutput.add([0, message]);
     });
 
     _innerInput.listen((message) {
-      print("[mc] raw input: $message");
-      var sink = _inputs[message[0]];
-      if (sink != null) {
-        sink.add(message[1]);
-      } else {
-        print("[mc] sink is null, available sinks: ${_inputs.keys}");
-      }
+      assert(_inputs.containsKey(message[0]));
+      _inputs[message[0]].add(message[1]);
     });
   }
 
@@ -71,10 +65,8 @@ class _MultiChannel implements MultiChannel {
     var inputController = new StreamController(sync: true);
     var outputController = new StreamController(sync: true);
     _inputs[inputId] = inputController.sink;
-    outputController.stream.listen((message) {
-      print("[mc] raw output: ${[outputId, message]}");
-      _innerOutput.add([outputId, message]);
-    });
+    outputController.stream.listen((message) =>
+        _innerOutput.add([outputId, message]));
 
     return new SubChannel._(
         this, outputId, inputController.stream, outputController.sink);
