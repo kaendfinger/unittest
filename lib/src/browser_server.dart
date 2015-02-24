@@ -36,6 +36,8 @@ class BrowserServer {
 
   final String _packageRoot;
 
+  Chrome _browser;
+
   Future<BrowserManager> get _browserManager {
     if (_browserManagerCompleter == null) {
       _browserManagerCompleter = new Completer();
@@ -43,9 +45,9 @@ class BrowserServer {
         _browserManagerCompleter.complete(new BrowserManager(webSocket));
       }));
 
-      var browser = new Chrome(url.resolve(
+      _browser = new Chrome(url.resolve(
           "?managerUrl=/one-off/${Uri.encodeQueryComponent(path)}"));
-      browser.onExit.catchError((error, stackTrace) {
+      _browser.onExit.catchError((error, stackTrace) {
         if (_browserManagerCompleter.isCompleted) return;
         _browserManagerCompleter.completeError(error, stackTrace);
       });
@@ -136,6 +138,9 @@ void main(_) {
 
   Future close() {
     new Directory(_compiledDir).deleteSync(recursive: true);
-    return _server.close();
+    return _server.close().then((_) {
+      if (_browserManagerCompleter == null) return;
+      return _browserManager.then((_) => _browser.close());
+    });
   }
 }

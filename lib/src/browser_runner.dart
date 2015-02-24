@@ -43,4 +43,9 @@ class Chrome {
       });
     });
   }
+
+  Future close() {
+    _process.kill();
+    return new Future.value();
+  }
 }
