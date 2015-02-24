@@ -9,11 +9,11 @@ import 'dart:collection';
 
 import 'package:stack_trace/stack_trace.dart';
 
+import '../utils.dart';
 import 'live_test.dart';
 import 'state.dart';
 import 'suite.dart';
 import 'test.dart';
-import 'utils.dart';
 
 /// An implementation of [LiveTest] that's controlled by a [LiveTestController].
 class _LiveTest extends LiveTest {

@@ -6,12 +6,12 @@ library unittest.isolate_test;
 
 import 'dart:isolate';
 
-import 'live_test.dart';
-import 'live_test_controller.dart';
-import 'remote_exception.dart';
-import 'state.dart';
-import 'suite.dart';
-import 'test.dart';
+import '../backend/live_test.dart';
+import '../backend/live_test_controller.dart';
+import '../backend/state.dart';
+import '../backend/suite.dart';
+import '../backend/test.dart';
+import '../util/remote_exception.dart';
 
 /// A test in another isolate.
 class IsolateTest implements Test {

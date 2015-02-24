@@ -8,8 +8,8 @@ import 'dart:async';
 
 import 'package:matcher/matcher.dart' hide completes, expect;
 
-import 'future_matchers.dart';
 import 'expect.dart';
+import 'future_matchers.dart';
 
 /// Matches a [Function] that prints text that matches [matcher].
 ///

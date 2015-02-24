@@ -8,9 +8,9 @@ import 'dart:async';
 
 import 'package:matcher/matcher.dart' hide throws, throwsA, expect, fail;
 
+import '../backend/invoker.dart';
+import '../utils.dart';
 import 'expect.dart';
-import 'invoker.dart';
-import 'utils.dart';
 
 /// Matches a [Future] that completes successfully with a value.
 ///

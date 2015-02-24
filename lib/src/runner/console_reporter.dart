@@ -7,12 +7,12 @@ library unittest.console_reporter;
 import 'dart:async';
 import 'dart:io';
 
+import '../backend/live_test.dart';
+import '../backend/state.dart';
+import '../backend/suite.dart';
+import '../util/io.dart';
+import '../utils.dart';
 import 'engine.dart';
-import 'io.dart';
-import 'live_test.dart';
-import 'state.dart';
-import 'suite.dart';
-import 'utils.dart';
 
 /// The terminal escape for green text, or the empty string if this is Windows
 /// or not outputting to a terminal.
