@@ -2,7 +2,7 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-library unittest.browser_server;
+library unittest.runner.browser.server;
 
 import 'dart:async';
 import 'dart:convert';
@@ -13,12 +13,12 @@ import 'package:shelf/shelf.dart' as shelf;
 import 'package:shelf/shelf_io.dart' as shelf_io;
 import 'package:shelf_web_socket/shelf_web_socket.dart';
 
-import '../backend/suite.dart';
-import '../util/dart.dart' as dart;
-import '../util/io.dart';
-import '../util/one_off_handler.dart';
+import '../../backend/suite.dart';
+import '../../util/dart.dart' as dart;
+import '../../util/io.dart';
+import '../../util/one_off_handler.dart';
 import 'browser_manager.dart';
-import 'browser_runner.dart';
+import 'chrome.dart';
 
 class BrowserServer {
   static Future<BrowserServer> start({String packageRoot}) {
@@ -127,7 +127,7 @@ class BrowserServer {
     var dir = new Directory(_compiledDir).createTempSync('test_').path;
     var output = p.join(dir, p.basename(path) + ".js");
     return dart.compile('''
-import "package:unittest/src/runner/browser_listener.dart";
+import "package:unittest/src/runner/browser/iframe_listener.dart";
 
 import "${p.toUri(p.absolute(path))}" as test;
 

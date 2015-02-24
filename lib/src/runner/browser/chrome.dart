@@ -3,7 +3,7 @@
 // BSD-style license that can be found in the LICENSE file.
 
 // TODO(nweiz): move this into its own package?
-library unittest.browser_controller;
+library unittest.runner.browser.chrome;
 
 import 'dart:async';
 import 'dart:io';

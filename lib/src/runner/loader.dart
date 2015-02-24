@@ -14,9 +14,9 @@ import '../backend/suite.dart';
 import '../util/dart.dart';
 import '../util/io.dart';
 import '../util/remote_exception.dart';
-import 'browser_server.dart';
-import 'isolate_test.dart';
+import 'browser/server.dart';
 import 'load_exception.dart';
+import 'vm/isolate_test.dart';
 
 /// A class for finding test files and loading them into a runnable form.
 class Loader {
@@ -78,7 +78,7 @@ class Loader {
     var packageRoot = packageRootFor(path, _packageRoot);
     var receivePort = new ReceivePort();
     return runInIsolate('''
-import "package:unittest/src/runner/vm_listener.dart";
+import "package:unittest/src/runner/vm/vm_listener.dart";
 
 import "${p.toUri(p.absolute(path))}" as test;
 

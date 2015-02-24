@@ -10,6 +10,8 @@ import 'dart:mirrors';
 
 import 'package:path/path.dart' as p;
 
+import '../runner/loader.dart';
+
 /// The root directory of the `unittest` package.
 final String libDir = _computeLibDir();
 String _computeLibDir() =>

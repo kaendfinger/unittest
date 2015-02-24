@@ -2,19 +2,19 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-library unittest.browser_manager;
+library unittest.runner.browser.browser_manager;
 
 import 'dart:async';
 import 'dart:convert';
 
 import 'package:http_parser/http_parser.dart';
 
-import '../backend/suite.dart';
-import '../util/multi_channel.dart';
-import '../util/remote_exception.dart';
-import '../utils.dart';
+import '../../backend/suite.dart';
+import '../../util/multi_channel.dart';
+import '../../util/remote_exception.dart';
+import '../../utils.dart';
+import '../load_exception.dart';
 import 'browser_test.dart';
-import 'load_exception.dart';
 
 class BrowserManager {
   final MultiChannel _channel;
