@@ -132,7 +132,7 @@ import "package:unittest/src/runner/browser/iframe_listener.dart";
 import "${p.toUri(p.absolute(path))}" as test;
 
 void main(_) {
-  BrowserListener.start(() => test.main);
+  IframeListener.start(() => test.main);
 }
 ''', output, packageRoot: packageRootFor(path, _packageRoot))
         .then((_) => output);

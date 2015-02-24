@@ -14,7 +14,7 @@ import '../../util/multi_channel.dart';
 import '../../util/remote_exception.dart';
 import '../../utils.dart';
 
-class BrowserListener {
+class IframeListener {
   /// The test suite to run.
   final Suite _suite;
 
