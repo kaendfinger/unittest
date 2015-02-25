@@ -7,8 +7,8 @@ library unittest.stream_channel;
 import 'dart:async';
 
 class StreamChannel {
-  final Stream input;
-  final StreamSink output;
+  final Stream stream;
+  final StreamSink sink;
 
-  StreamChannel(this.input, this.output);
+  StreamChannel(this.stream, this.sink);
 }

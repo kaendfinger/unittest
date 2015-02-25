@@ -16,13 +16,13 @@ import '../../util/stream_channel.dart';
 void main() {
   runZoned(() {
     var serverChannel = _connectToServer();
-    serverChannel.input.listen((message) {
+    serverChannel.stream.listen((message) {
       assert(message['command'] == 'loadSuite');
-      var subChannel = serverChannel.createSubChannel(message['channel']);
+      var suiteChannel = serverChannel.virtualChannel(message['channel']);
       var iframeChannel = _connectToIframe(message['url']);
 
-      iframeChannel.input.pipe(subChannel.output);
-      subChannel.input.pipe(iframeChannel.output);
+      iframeChannel.stream.pipe(suiteChannel.sink);
+      suiteChannel.stream.pipe(iframeChannel.sink);
     });
   }, onError: (error, stackTrace) {
     print("$error\n${new Trace.from(stackTrace).terse}");

@@ -25,8 +25,8 @@ class BrowserManager {
           transformSink(webSocket, JSON.encoder));
 
   Future<Suite> loadSuite(String path, Uri url) {
-    var suiteChannel = _channel.createSubChannel();
-    _channel.output.add({
+    var suiteChannel = _channel.virtualChannel();
+    _channel.sink.add({
       "command": "loadSuite",
       "url": url.toString(),
       "channel": suiteChannel.id
@@ -34,8 +34,8 @@ class BrowserManager {
 
     // Create a nested MultiChannel because the iframe will be using a channel
     // wrapped within the host's channel.
-    suiteChannel = new MultiChannel(suiteChannel.input, suiteChannel.output);
-    return suiteChannel.input.first.then((response) {
+    suiteChannel = new MultiChannel(suiteChannel.stream, suiteChannel.sink);
+    return suiteChannel.stream.first.then((response) {
       if (response["type"] == "loadException") {
         return new Future.error(new LoadException(path, response["message"]));
       } else if (response["type"] == "error") {
@@ -46,9 +46,8 @@ class BrowserManager {
       }
 
       return new Suite(path, response["tests"].map((test) {
-        var testChannel = suiteChannel.createSubChannel(test['channel']);
-        return new BrowserTest(test['name'],
-            suiteChannel.createSubChannel(test['channel']));
+        var testChannel = suiteChannel.virtualChannel(test['channel']);
+        return new BrowserTest(test['name'], testChannel);
       }));
     });
   }

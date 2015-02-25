@@ -41,7 +41,7 @@ class IframeListener {
     try {
       runZoned(main, zoneValues: {#unittest.declarer: declarer});
     } catch (error, stackTrace) {
-      channel.output.add({
+      channel.sink.add({
         "type": "error",
         "error": RemoteException.serialize(error, stackTrace)
       });
@@ -80,7 +80,7 @@ class IframeListener {
   }
 
   static void _sendLoadException(MultiChannel channel, String message) {
-    channel.output.add({"type": "loadException", "message": message});
+    channel.sink.add({"type": "loadException", "message": message});
   }
 
   IframeListener._(this._suite);
@@ -89,16 +89,16 @@ class IframeListener {
     var tests = [];
     for (var i = 0; i < _suite.tests.length; i++) {
       var test = _suite.tests[i];
-      var testChannel = channel.createSubChannel();
+      var testChannel = channel.virtualChannel();
       tests.add({"name": test.name, "channel": testChannel.id});
 
-      testChannel.input.listen((message) {
+      testChannel.stream.listen((message) {
         assert(message['command'] == 'run');
-        _runTest(test, channel.createSubChannel(message['channel']));
+        _runTest(test, channel.virtualChannel(message['channel']));
       });
     }
 
-    channel.output.add({
+    channel.sink.add({
       "type": "success",
       "tests": tests
     });
@@ -109,7 +109,7 @@ class IframeListener {
     var liveTest = test.load(_suite);
 
     liveTest.onStateChange.listen((state) {
-      channel.output.add({
+      channel.sink.add({
         "type": "state-change",
         "status": state.status.name,
         "result": state.result.name
@@ -117,13 +117,13 @@ class IframeListener {
     });
 
     liveTest.onError.listen((asyncError) {
-      channel.output.add({
+      channel.sink.add({
         "type": "error",
         "error": RemoteException.serialize(
             asyncError.error, asyncError.stackTrace)
       });
     });
 
-    liveTest.run().then((_) => channel.output.add({"type": "complete"}));
+    liveTest.run().then((_) => channel.sink.add({"type": "complete"}));
   }
 }

@@ -25,13 +25,13 @@ class BrowserTest implements Test {
     controller = new LiveTestController(suite, this, () {
       controller.setState(const State(Status.running, Result.success));
 
-      var subChannel = _channel.createSubChannel();
-      _channel.output.add({
+      var testChannel = _channel.virtualChannel();
+      _channel.sink.add({
         'command': 'run',
-        'channel': subChannel.id
+        'channel': testChannel.id
       });
 
-      subChannel.input.listen((message) {
+      testChannel.stream.listen((message) {
         if (message['type'] == 'error') {
           var asyncError = RemoteException.deserialize(message['error']);
           controller.addError(asyncError.error, asyncError.stackTrace);
