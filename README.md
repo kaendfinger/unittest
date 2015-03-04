@@ -1,5 +1,7 @@
 `unittest` provides a standard way of writing and running tests in Dart.
 
+[![Build Status](https://travis-ci.org/dart-lang/unittest.svg?branch=master)](https://travis-ci.org/dart-lang/unittest)
+
 ## Writing Tests
 
 Tests are specified using the top-level [`test()`][test] function, and test
